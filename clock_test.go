@@ -22,20 +22,14 @@ type clockSuite struct {
 
 var _ = gc.Suite(&clockSuite{})
 
-func (*clockSuite) now(c *gc.C) time.Time {
-	utc, err := time.LoadLocation("UTC")
-	c.Assert(err, gc.IsNil)
-	return time.Date(2015, 9, 10, 13, 14, 15, 0, utc)
-}
-
 func (s *clockSuite) TestClockNow(c *gc.C) {
-	now := s.now(c)
+	now := time.Date(2015, 9, 10, 13, 14, 15, 0, time.UTC)
 	tc := clocktest.NewClock(now)
 	c.Assert(tc.Now(), gc.Equals, now)
 }
 
 func (s *clockSuite) TestClockAdvance(c *gc.C) {
-	now := s.now(c)
+	now := time.Date(2015, 9, 10, 13, 14, 15, 0, time.UTC)
 	tc := clocktest.NewClock(now)
 	advance := 5 * time.Minute
 	tc.Advance(advance)
@@ -43,7 +37,7 @@ func (s *clockSuite) TestClockAdvance(c *gc.C) {
 }
 
 func (s *clockSuite) TestClockAfter(c *gc.C) {
-	now := s.now(c)
+	now := time.Date(2015, 9, 10, 13, 14, 15, 0, time.UTC)
 	tc := clocktest.NewClock(now)
 	advance := 5 * time.Minute
 
