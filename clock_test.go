@@ -10,12 +10,12 @@ import (
 	gc "gopkg.in/check.v1"
 
 	"github.com/juju/clock"
-	"github.com/juju/clock/testing"
+	"github.com/juju/clock/clocktest"
 )
 
 // Type assertions: both the wall clock and the testing clock are Clocks.
 var _ clock.Clock = clock.WallClock
-var _ clock.Clock = (*testing.Clock)(nil)
+var _ clock.Clock = (*clocktest.Clock)(nil)
 
 type clockSuite struct {
 }
@@ -30,13 +30,13 @@ func (*clockSuite) now(c *gc.C) time.Time {
 
 func (s *clockSuite) TestClockNow(c *gc.C) {
 	now := s.now(c)
-	tc := testing.NewClock(now)
+	tc := clocktest.NewClock(now)
 	c.Assert(tc.Now(), gc.Equals, now)
 }
 
 func (s *clockSuite) TestClockAdvance(c *gc.C) {
 	now := s.now(c)
-	tc := testing.NewClock(now)
+	tc := clocktest.NewClock(now)
 	advance := 5 * time.Minute
 	tc.Advance(advance)
 	c.Assert(tc.Now(), gc.Equals, now.Add(advance))
@@ -44,7 +44,7 @@ func (s *clockSuite) TestClockAdvance(c *gc.C) {
 
 func (s *clockSuite) TestClockAfter(c *gc.C) {
 	now := s.now(c)
-	tc := testing.NewClock(now)
+	tc := clocktest.NewClock(now)
 	advance := 5 * time.Minute
 
 	alarm := tc.After(advance)
